@@ -27,6 +27,12 @@ export function transferPairId(id1: string, id2: string): string {
  * Находит кандидатов на переводы между своими счетами: встречные операции
  * (списание + зачисление) одинаковой суммы, близкие по дате, из разных
  * счетов/файлов. Жадное сопоставление один-к-одному.
+ *
+ * TODO(scale/accuracy): алгоритм O(outgoing×incoming). Для больших историй
+ * (десятки тысяч операций) стоит индексировать incoming по (сумма) в Map и брать
+ * ближайшую по дате — это уберёт квадратичность. Также жадное сопоставление по
+ * сумме может ошибиться при множестве одинаковых сумм; поэтому итог всегда
+ * подтверждается пользователем в UI (см. TransferReview).
  */
 export function detectTransfers(txs: Transaction[], opts: TransferOptions = {}): TransferPair[] {
   const { maxDaysApart, amountTolerance } = { ...DEFAULTS, ...opts };

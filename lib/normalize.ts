@@ -1,8 +1,19 @@
 import type { ColumnMapping, ParsedFile, Transaction } from "@/lib/types";
 
-/** Детерминированный короткий id из полей транзакции (djb2-хэш). */
-export function makeTxId(date: string, amount: number, description: string, file: string): string {
-  const s = `${date}|${amount.toFixed(2)}|${description}|${file}`;
+/**
+ * Детерминированный короткий id из полей транзакции (djb2-хэш).
+ * index — позиция строки в файле: различает две идентичные операции в одной
+ * выписке (иначе они схлопнулись бы в один id и одна потерялась бы при дедупе),
+ * при этом повторный импорт того же файла даёт те же id (дедуп продолжает работать).
+ */
+export function makeTxId(
+  date: string,
+  amount: number,
+  description: string,
+  file: string,
+  index = 0,
+): string {
+  const s = `${date}|${amount.toFixed(2)}|${description}|${file}|${index}`;
   let h = 5381;
   for (let i = 0; i < s.length; i++) {
     h = ((h << 5) + h + s.charCodeAt(i)) | 0;
@@ -56,8 +67,8 @@ export function parseAmount(raw: string, decimalSeparator?: "," | "." | "auto"):
   return abs;
 }
 
-/** Разбор даты по формату -> ISO (YYYY-MM-DD). Поддерживает частые форматы. */
-export function parseDate(raw: string, format?: string): string {
+/** Разбор даты -> ISO (YYYY-MM-DD). Поддерживает частые форматы (авто-определение). */
+export function parseDate(raw: string): string {
   if (!raw) return "";
   const s = String(raw).trim();
 
@@ -68,8 +79,8 @@ export function parseDate(raw: string, format?: string): string {
   // DD.MM.YYYY / DD/MM/YYYY / DD-MM-YYYY (с 2- или 4-значным годом).
   const dmy = s.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})/);
   if (dmy) {
-    let [, d, m, y] = dmy;
-    if (y.length === 2) y = `20${y}`;
+    const [, d, m, yRaw] = dmy;
+    const y = yRaw.length === 2 ? `20${yRaw}` : yRaw;
     return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
   }
 
@@ -107,7 +118,7 @@ export function normalizeRows(file: ParsedFile, mapping: ColumnMapping): Transac
 
   const out: Transaction[] = [];
 
-  file.rows.slice(skip).forEach((row) => {
+  file.rows.slice(skip).forEach((row, index) => {
     const rawDate = iDate >= 0 ? row[iDate] : "";
     const description = (iDesc >= 0 ? row[iDesc] : "")?.toString().trim() || "—";
     if (!rawDate && description === "—") return;
@@ -126,13 +137,13 @@ export function normalizeRows(file: ParsedFile, mapping: ColumnMapping): Transac
     if (Number.isNaN(amount)) return;
     if (mapping.invertSign) amount = -amount;
 
-    const date = parseDate(rawDate, mapping.dateFormat);
+    const date = parseDate(rawDate);
     if (!date) return;
 
     const account = iAccount >= 0 ? row[iAccount]?.toString().trim() : undefined;
 
     out.push({
-      id: makeTxId(date, amount, description, file.fileName),
+      id: makeTxId(date, amount, description, file.fileName, index),
       date,
       amount: Math.round(amount * 100) / 100,
       currency,

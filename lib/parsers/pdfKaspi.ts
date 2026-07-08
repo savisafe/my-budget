@@ -9,10 +9,10 @@ export async function parseKaspiPdf(file: File): Promise<ParsedFile> {
   const text = await extractPdfText(file);
   const raw = parseKaspiText(text);
 
-  const preNormalized: Transaction[] = raw.map((r) => {
+  const preNormalized: Transaction[] = raw.map((r, index) => {
     const amount = parseKaspiAmount(r.amount);
     return {
-      id: makeTxId(r.date, amount, r.store, file.name),
+      id: makeTxId(r.date, amount, r.store, file.name, index),
       date: r.dateIso,
       amount,
       currency: "KZT",
