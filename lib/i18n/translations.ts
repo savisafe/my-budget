@@ -35,6 +35,7 @@ export const translations: Record<Locale, Dict> = {
     "import.errorUnrecognized": "Не удалось извлечь таблицу из файла «{name}». Если это отсканированный PDF (картинка), выгрузите выписку в CSV/Excel и попробуйте снова.",
 
     "dropzone.title": "Перетащите выписки сюда",
+    "dropzone.button": "Выбрать файлы",
     "dropzone.hint": "Можно несколько файлов сразу · CSV, Excel (.xlsx/.xls), PDF (любой банк)",
 
     "mapper.rows": "{n} строк",
@@ -222,6 +223,7 @@ export const translations: Record<Locale, Dict> = {
     "import.errorUnrecognized": "«{name}» файлынан кесте шығару мүмкін болмады. Егер бұл сканерленген PDF (сурет) болса, үзіндіні CSV/Excel-ге шығарып, қайта көріңіз.",
 
     "dropzone.title": "Үзінділерді осында сүйреңіз",
+    "dropzone.button": "Файлдарды таңдау",
     "dropzone.hint": "Бірнеше файлды бірден · CSV, Excel (.xlsx/.xls), PDF (кез келген банк)",
 
     "mapper.rows": "{n} жол",
@@ -409,6 +411,7 @@ export const translations: Record<Locale, Dict> = {
     "import.errorUnrecognized": "Could not extract a table from “{name}”. If it is a scanned PDF (an image), export the statement to CSV/Excel and try again.",
 
     "dropzone.title": "Drag statements here",
+    "dropzone.button": "Choose files",
     "dropzone.hint": "Multiple files at once · CSV, Excel (.xlsx/.xls), PDF (any bank)",
 
     "mapper.rows": "{n} rows",

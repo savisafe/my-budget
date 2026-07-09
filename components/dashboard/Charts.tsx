@@ -34,7 +34,7 @@ const tooltipStyle = {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="surface rounded-xl border p-4">
+    <div className="card p-4">
       <h3 className="mb-3 font-semibold">{title}</h3>
       {children}
     </div>
@@ -101,7 +101,7 @@ export function TrendChart({ data }: { data: MonthDatum[] }) {
             <Legend />
             <Bar dataKey="income" name={t("chart.income")} fill="#10b981" radius={[4, 4, 0, 0]} />
             <Bar dataKey="expense" name={t("chart.expense")} fill="#ef4444" radius={[4, 4, 0, 0]} />
-            <Line dataKey="net" name={t("chart.net")} stroke="#2563eb" strokeWidth={2} dot={false} />
+            <Line dataKey="net" name={t("chart.net")} stroke="#0284c7" strokeWidth={2} dot={false} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>

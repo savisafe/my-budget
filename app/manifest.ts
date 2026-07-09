@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Импорт выписок из разных банков, исключение переводов между своими счетами, категоризация трат и дашборд.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f8fafc",
-    theme_color: "#2563eb",
+    background_color: "#f3faf6",
+    theme_color: "#059669",
     lang: "ru",
     orientation: "portrait-primary",
     icons: [

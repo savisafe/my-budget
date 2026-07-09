@@ -72,19 +72,19 @@ export default function DashboardPage() {
         </div>
         <button
           onClick={() => exportToExcel(transactions, filters, (id) => t(`cat.${id}`))}
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+          className="btn btn-primary"
         >
           {t("dash.export")}
         </button>
       </div>
 
       {/* Фильтры */}
-      <div className="surface grid grid-cols-2 gap-3 rounded-xl border p-4 md:grid-cols-4">
+      <div className="card grid grid-cols-2 gap-3 p-4 md:grid-cols-4">
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-muted">{t("dash.from")}</span>
           <input
             type="date"
-            className="surface rounded-lg border px-2 py-1.5"
+            className="input"
             min={range?.min}
             max={range?.max}
             value={filters.from ?? ""}
@@ -95,7 +95,7 @@ export default function DashboardPage() {
           <span className="text-muted">{t("dash.to")}</span>
           <input
             type="date"
-            className="surface rounded-lg border px-2 py-1.5"
+            className="input"
             min={range?.min}
             max={range?.max}
             value={filters.to ?? ""}
@@ -105,7 +105,7 @@ export default function DashboardPage() {
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-muted">{t("dash.accountBank")}</span>
           <select
-            className="surface rounded-lg border px-2 py-1.5"
+            className="input"
             value={filters.account ?? ""}
             onChange={(e) => set("account", e.target.value)}
           >
@@ -120,7 +120,7 @@ export default function DashboardPage() {
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-muted">{t("dash.category")}</span>
           <select
-            className="surface rounded-lg border px-2 py-1.5"
+            className="input"
             value={filters.category ?? ""}
             onChange={(e) => set("category", e.target.value)}
           >

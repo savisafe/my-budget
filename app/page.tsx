@@ -95,7 +95,7 @@ export default function ImportPage() {
       )}
 
       {error && (
-        <div className="rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
+        <div className="animate-in rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
           {error}
         </div>
       )}
@@ -117,33 +117,27 @@ export default function ImportPage() {
 
       {/* Сводка */}
       {transactions.length > 0 && (
-        <div className="surface rounded-xl border p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="card animate-in p-5">
+          <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="text-2xl font-bold">{transactions.length}</div>
+              <div className="tnum text-2xl font-bold">{transactions.length}</div>
               <div className="text-sm text-muted">{t("import.loaded")}</div>
             </div>
             <SummaryTotals />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {candidateCount > 0 && (
-                <Link
-                  href="/review"
-                  className="rounded-lg border border-warning/50 bg-warning/10 px-4 py-2 text-sm font-medium hover:bg-warning/20"
-                >
+                <Link href="/review" className="btn btn-secondary">
                   {t("import.checkTransfers", { n: candidateCount })}
                 </Link>
               )}
-              <Link
-                href="/dashboard"
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark"
-              >
+              <Link href="/dashboard" className="btn btn-primary">
                 {t("import.openDashboard")}
               </Link>
               <button
                 onClick={() => {
                   if (confirm(t("import.clearConfirm"))) clearAll();
                 }}
-                className="rounded-lg border border-danger/40 px-4 py-2 text-sm font-medium text-danger hover:bg-danger/10"
+                className="btn btn-danger"
               >
                 {t("import.clear")}
               </button>
@@ -153,7 +147,7 @@ export default function ImportPage() {
       )}
 
       {toast && (
-        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-lg bg-accent px-5 py-3 text-sm font-medium text-white shadow-lg">
+        <div className="animate-in fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-xl bg-[color:var(--color-primary-dark)] px-5 py-3 text-sm font-medium text-white shadow-lg">
           ✅ {toast}
         </div>
       )}
@@ -170,11 +164,11 @@ function SummaryTotals() {
   return (
     <div className="flex gap-6">
       <div>
-        <div className="text-lg font-bold text-accent">{formatMoney(income)}</div>
+        <div className="tnum text-lg font-bold text-accent">{formatMoney(income)}</div>
         <div className="text-xs text-muted">{t("import.income")}</div>
       </div>
       <div>
-        <div className="text-lg font-bold text-danger">{formatMoney(expense)}</div>
+        <div className="tnum text-lg font-bold text-danger">{formatMoney(expense)}</div>
         <div className="text-xs text-muted">{t("import.expense")}</div>
       </div>
     </div>
