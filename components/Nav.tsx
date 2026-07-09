@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { BrandMark } from "@/components/BrandMark";
 
 const LINKS = [
   { href: "/", key: "nav.import" },
@@ -28,16 +29,18 @@ export function Nav() {
     const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
     return (
       "whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium transition-colors " +
-      (active ? "bg-primary text-white" : "text-muted hover:bg-black/5 dark:hover:bg-white/10")
+      (active
+        ? "bg-primary/12 text-primary"
+        : "text-muted hover:bg-black/5 dark:hover:bg-white/10")
     );
   };
 
   return (
-    <header className="surface sticky top-0 z-40 border-b backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur-md">
       <nav className="mx-auto flex w-full max-w-6xl items-center gap-2 px-4 py-3 md:px-8">
-        <Link href="/" className="mr-auto flex items-center gap-2 font-bold">
-          <span className="text-xl">💰</span>
-          <span className="hidden sm:inline">{t("brand")}</span>
+        <Link href="/" className="mr-auto flex items-center gap-2.5 font-bold">
+          <BrandMark className="h-8 w-8 shrink-0" />
+          <span className="hidden text-lg brand-gradient sm:inline">{t("brand")}</span>
         </Link>
 
         {/* Десктоп: ссылки в ряд + переключатель языка */}

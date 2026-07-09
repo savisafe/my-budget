@@ -1,29 +1,45 @@
 @import "tailwindcss";
 
+/* ─── Дизайн-токены (Emerald Growth) ──────────────────────────────────────
+   Основная идея бренда: сохранить и приумножить деньги → изумрудно-зелёная
+   палитра «роста», тёплые нейтрали, мягкие тени и скругления. */
+
 @theme {
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
+  --color-primary: #059669; /* emerald-600 — бренд, кнопки, активные состояния */
+  --color-primary-dark: #047857; /* emerald-700 — hover/нажатие */
+  --color-primary-light: #10b981; /* emerald-500 — акценты, подсветка */
   --color-secondary: #64748b;
-  --color-accent: #10b981;
+  --color-accent: #10b981; /* доход / положительное */
+  --color-gold: #f59e0b; /* «приумножение», премиальные акценты */
   --color-warning: #f59e0b;
-  --color-danger: #ef4444;
+  --color-danger: #ef4444; /* расход / отрицательное */
 }
 
 :root {
-  --bg: #f8fafc;
+  --bg: #f4f8f6;
   --surface: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
+  --surface-2: #eef4f0; /* вложенные блоки, hover-фон */
+  --text: #0d1f16;
+  --muted: #5b6b63;
+  --border: #e2ebe6;
+  --ring: rgba(5, 150, 105, 0.35);
+  --shadow-sm: 0 1px 2px rgba(6, 30, 20, 0.05), 0 1px 3px rgba(6, 30, 20, 0.06);
+  --shadow-md: 0 4px 12px rgba(6, 30, 20, 0.07), 0 2px 4px rgba(6, 30, 20, 0.05);
+  --shadow-lg: 0 12px 32px rgba(6, 30, 20, 0.12), 0 4px 8px rgba(6, 30, 20, 0.06);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0b1120;
-    --surface: #111827;
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    --border: #1f2937;
+    --bg: #071410;
+    --surface: #0e1f18;
+    --surface-2: #14281f;
+    --text: #e6f0ea;
+    --muted: #8aa79a;
+    --border: #1c3529;
+    --ring: rgba(16, 185, 129, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -36,17 +52,142 @@ body {
 body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
 }
 
-/* Утилитарные классы поверх переменных темы */
+/* Мягкий «живой» фон — размытые изумрудные пятна за контентом. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 60rem at 8% -10%, rgba(16, 185, 129, 0.12), transparent 55%),
+    radial-gradient(50rem 50rem at 100% 0%, rgba(5, 150, 105, 0.1), transparent 50%);
+}
+
+/* Цифры — табличные (ровные колонки сумм). */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ─── Утилиты поверх токенов ─────────────────────────────────────────────── */
+
 .surface {
   background: var(--surface);
   border-color: var(--border);
+}
+.surface-2 {
+  background: var(--surface-2);
 }
 .text-muted {
   color: var(--muted);
 }
 
+/* Карточка: единый вид блоков контента. */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+.card-hover {
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.card-hover:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-primary) 35%, var(--border));
+}
+
+/* Кнопки. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+  box-shadow: var(--shadow-md);
+}
+.btn-primary:active {
+  filter: brightness(0.96);
+}
+.btn-secondary {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: var(--surface-2);
+  border-color: color-mix(in srgb, var(--color-primary) 40%, var(--border));
+}
+.btn-danger {
+  color: var(--color-danger);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-danger) 40%, transparent);
+}
+.btn-danger:hover {
+  background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+}
+
+/* Поля ввода. */
+.input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+  padding: 0.5rem 0.7rem;
+  color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Бренд-градиент для текста/логотипа. */
+.brand-gradient {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Небольшой «пилюль»-бейдж. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Анимации. */
 @keyframes spin-slow {
   to {
     transform: rotate(360deg);
@@ -54,6 +195,28 @@ body {
 }
 .animate-spin-slow {
   animation: spin-slow 1s linear infinite;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-in {
+  animation: fade-in-up 0.4s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .card-hover {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* Скрыть полосу прокрутки (для навигации на узких экранах) */

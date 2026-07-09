@@ -2,12 +2,17 @@
 
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n/context";
+import { BrandMark } from "@/components/BrandMark";
 
 export function Footer() {
   const { t } = useI18n();
   return (
     <footer className="surface mt-auto border-t">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-2 px-4 py-6 text-center text-sm text-muted md:px-8">
+        <div className="flex items-center gap-2 font-semibold text-[color:var(--text)]">
+          <BrandMark className="h-5 w-5" />
+          {t("brand")}
+        </div>
         <div>© {new Date().getFullYear()} {t("brand")}</div>
         <div>
           {t("footer.localNote")}{" "}
