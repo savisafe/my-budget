@@ -53,12 +53,12 @@ export default function ReviewPage() {
         <p className="mt-1 text-muted">{t("review.subtitle")}</p>
       </div>
 
-      <section className="surface rounded-xl border p-5">
+      <section className="card p-5">
         <h2 className="mb-3 text-xl font-semibold">{t("review.transfersHeading")}</h2>
         <TransferReview />
       </section>
 
-      <section className="surface rounded-xl border p-5">
+      <section className="card p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-xl font-semibold">{t("review.categoriesHeading")}</h2>
           <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export default function ReviewPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("review.search")}
-            className="surface flex-grow rounded-lg border px-3 py-2 text-sm"
+            className="input flex-grow text-sm"
           />
           <label className="flex items-center gap-2 text-sm">
             <input
@@ -93,23 +93,30 @@ export default function ReviewPage() {
           {visible.map((tx) => {
             const cat = getCategory(tx.category);
             return (
-              <div key={tx.id} className="flex flex-wrap items-center gap-3 py-2">
-                <div className="min-w-0 flex-grow">
-                  <div className="truncate font-medium">
-                    {cat.icon} {tx.description}
+              <div
+                key={tx.id}
+                className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:gap-3"
+              >
+                {/* На мобилке — описание и сумма в одну строку; на sm+ становятся
+                    прямыми детьми строки (sm:contents), а селект встаёт справа. */}
+                <div className="flex items-start justify-between gap-3 sm:contents">
+                  <div className="min-w-0 flex-grow">
+                    <div className="truncate font-medium">
+                      {cat.icon} {tx.description}
+                    </div>
+                    <div className="text-xs text-muted">
+                      {formatDate(tx.date)} · {tx.bank || tx.sourceFile}
+                      {tx.categorySource && ` · ${labelSource(tx.categorySource)}`}
+                    </div>
                   </div>
-                  <div className="text-xs text-muted">
-                    {formatDate(tx.date)} · {tx.bank || tx.sourceFile}
-                    {tx.categorySource && ` · ${labelSource(tx.categorySource)}`}
+                  <div
+                    className={
+                      "tnum w-24 shrink-0 text-right text-sm font-semibold sm:w-28 " +
+                      (tx.amount >= 0 ? "text-accent" : "text-danger")
+                    }
+                  >
+                    {formatMoney(tx.amount, tx.currency)}
                   </div>
-                </div>
-                <div
-                  className={
-                    "w-28 text-right text-sm font-semibold " +
-                    (tx.amount >= 0 ? "text-accent" : "text-danger")
-                  }
-                >
-                  {formatMoney(tx.amount, tx.currency)}
                 </div>
                 <CategorySelect
                   value={tx.category}

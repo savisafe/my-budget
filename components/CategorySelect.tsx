@@ -18,7 +18,8 @@ export function CategorySelect({ value, onChange, compact }: Props) {
       onChange={(e) => onChange(e.target.value)}
       title={t(`cat.${cat.id}`)}
       className={
-        "surface rounded-lg border px-2 py-1 text-sm " + (compact ? "max-w-[190px]" : "w-full")
+        "input px-2 py-1.5 text-sm " +
+        (compact ? "w-full shrink-0 sm:w-56" : "w-full")
       }
     >
       {CATEGORIES.filter((c) => c.id !== "transfer").map((c) => (
