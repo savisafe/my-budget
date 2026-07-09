@@ -1,111 +1,40 @@
-## Description
-This project is a web application for budget management that processes transaction data from Kaspi Gold bank statements. It calculates total expenses and income for each store, based on purchases and deposits. The application features a modern web interface with drag-and-drop file upload, PDF parsing, and Excel export functionality.
+# My budget
 
-## Features
-- 📄 **Drag-and-drop PDF upload** - Easy file upload interface
-- 🔄 **PDF to JSON conversion** - Automatic extraction of transaction data
-- 💰 **Transaction calculations** - Total expenses and income per store
-- 📊 **Beautiful UI** - Modern interface built with Tailwind CSS
-- 🔍 **JSON preview** - View raw transaction data
-- 📥 **Excel export** - Export results to Excel format
-- 🔒 **Security** - Rate limiting, file validation, and secure headers
-
-## Changelog
-[1.2.0] - 2026-01-12
-- Added Excel export functionality
-- Optimized for Vercel Hobby plan (10s timeout)
-- Enhanced security features (rate limiting, file validation)
-- Improved error handling and user feedback
-- Added file size limits (5MB for Hobby plan)
-
-[1.1.0] - 2025-03-01
-- Added web interface with drag-and-drop PDF upload
-- Implemented PDF to JSON conversion
-- Created beautiful UI for displaying transaction calculations
-- Added Express server for file processing
-
-[1.0.0] - 2025-03-01
-- Initial release of the project with basic transaction parsing
-- Added calculation and grouping of transactions by store
-- Implemented console output for transaction results
-
-## How to start:
-
-### Local Development:
-```bash
-git clone https://github.com/savisafe/budget-control.git
-cd budget-control
-npm install
-npm run dev
-```
-
-Then open http://localhost:3000 in your browser:
-1. Drag and drop your Kaspi Gold PDF statement or click to select file
-2. Click "Обработать PDF" to process and view results
-3. View JSON data or export to Excel
-
----------------------------------------------------------------------------------------------------------------
-
-## Описание
-Проект представляет собой веб-приложение для управления бюджетом, которое обрабатывает данные о транзакциях из выписок Kaspi Gold. Оно вычисляет общие расходы и доходы для каждого магазина на основе покупок и пополнений. Приложение имеет современный веб-интерфейс с drag-and-drop загрузкой файлов, парсингом PDF и экспортом в Excel.
+Мультибанковский анализатор личных финансов на **Next.js**. Импортируйте выписки из
+нескольких банков, приложение автоматически исключит переводы между вашими счетами,
+разложит траты по категориям и покажет подробный дашборд. Работает как **PWA**, данные
+хранятся **только в браузере**.
 
 ## Возможности
-- 📄 **Загрузка PDF файлов** - через drag-and-drop или выбор файла
-- 🔄 **Автоматическая конвертация** - PDF в JSON формат
-- 💰 **Расчет транзакций** - общие суммы по каждому магазину
-- 📊 **Красивый интерфейс** - современный UI на Tailwind CSS
-- 🔍 **Просмотр JSON** - просмотр исходных данных
-- 📥 **Экспорт в Excel** - экспорт результатов в Excel формат
-- 🔒 **Безопасность** - rate limiting, валидация файлов, безопасные заголовки
+- 📥 **Импорт N выписок** — CSV, Excel (.xlsx/.xls), PDF (Kaspi Gold).
+- 🧩 **Универсальный маппинг колонок** — работает с любым банком; пресеты сохраняются.
+- 🔁 **Детект переводов между своими счетами** — парные встречные операции находятся
+  автоматически, подтверждаются вручную и исключаются из аналитики.
+- 🏷️ **Категоризация по правилам + ручная разметка** — ваш выбор запоминается и применяется
+  к похожим описаниям при следующем импорте.
+- 📊 **Дашборд** — доходы/расходы/нетто, норма сбережений, категории, динамика по месяцам,
+  топ мерчантов, разбивка по счетам, фильтры и экспорт в Excel.
+- 📲 **PWA** — устанавливается и работает офлайн.
+- 🔒 **Приватность** — файлы и транзакции только в браузере (IndexedDB), на сервер ничего не
+  уходит.
+- 🤖 **Скоро: ИИ-помощник** по управлению финансами (страница «ИИ-помощник» — тизер).
 
-## Журнал изменений
-[1.2.0] - 12 Января 2026
-- Добавлен экспорт в Excel формат
-- Оптимизировано для Vercel Hobby план (таймаут 10 секунд)
-- Улучшена безопасность (rate limiting, валидация файлов)
-- Улучшена обработка ошибок и обратная связь с пользователем
-- Добавлены ограничения размера файла (5MB для Hobby плана)
+## Стек
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Zustand · Dexie (IndexedDB)
+· Recharts · PapaParse · SheetJS · pdfjs-dist.
 
-[1.1.0] - 1 марта 2025
-- Добавлен веб-интерфейс с drag-and-drop для загрузки PDF
-- Реализована конвертация PDF в JSON
-- Создан красивый UI для отображения расчетов транзакций
-- Добавлен Express сервер для обработки файлов
-
-[1.0.0] - 1 марта 2025
-- Первый релиз с базовой обработкой транзакций
-- Добавлены расчёты и группировка транзакций по магазинам
-- Реализован вывод результатов транзакций в консоль
-
-## Как начать:
-
-### Локальная разработка:
+## Запуск
 ```bash
-git clone https://github.com/savisafe/budget-control.git
-cd budget-control
 npm install
-npm run dev
+npm run dev   # http://localhost:3000
 ```
+Обязательных переменных окружения нет — приложение полностью клиентское.
 
-Затем откройте http://localhost:3000 в браузере:
-1. Перетащите PDF файл выписки Kaspi Gold или выберите файл
-2. Нажмите "Обработать PDF" для обработки и просмотра результатов
-3. Просмотрите JSON данные или экспортируйте в Excel
+## Деплой на Vercel
+Импортируйте репозиторий в Vercel (Next.js определится автоматически). Дополнительная
+настройка не требуется.
 
-## License & Terms / Лицензия и условия использования
-
-This project is licensed under a **Non-Commercial License**. 
-
-**⚠️ Important**: By using this software, you agree to the terms and conditions outlined in [TERMS.md](./TERMS.md), including:
-- Non-commercial use only
-- No warranties or guarantees regarding data security
-- You assume all risks and responsibilities
-
-**⚠️ Важно**: Используя это программное обеспечение, вы соглашаетесь с условиями, изложенными в [TERMS.md](./TERMS.md), включая:
-- Только некоммерческое использование
-- Отсутствие гарантий безопасности данных
-- Вы принимаете на себя все риски и ответственность
-
-See [TERMS.md](./TERMS.md) for full license text and disclaimer.
-
-См. [TERMS.md](./TERMS.md) для полного текста лицензии и отказа от ответственности.
+## Лицензия
+Некоммерческая лицензия. Используя приложение, вы соглашаетесь с условиями в
+[TERMS.md](./TERMS.md): только некоммерческое использование, без гарантий безопасности
+данных, все риски на пользователе.
