@@ -7,33 +7,40 @@ import { useI18n } from "@/lib/i18n/context";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { BrandMark } from "@/components/BrandMark";
 
-const LINKS = [
+// Основные пункты — в десктоп-панели; второстепенные прячутся в «Ещё».
+const PRIMARY = [
   { href: "/", key: "nav.import" },
   { href: "/review", key: "nav.review" },
   { href: "/dashboard", key: "nav.dashboard" },
+];
+const SECONDARY = [
   { href: "/instructions", key: "nav.instructions" },
   { href: "/assistant", key: "nav.assistant" },
 ];
+const ALL = [...PRIMARY, ...SECONDARY];
 
 export function Nav() {
   const pathname = usePathname();
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
-  // Закрывать мобильное меню при смене маршрута.
+  // Закрывать меню при смене маршрута.
   useEffect(() => {
     setOpen(false);
+    setMoreOpen(false);
   }, [pathname]);
 
-  const linkClass = (href: string) => {
-    const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
-    return (
-      "whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium transition-colors " +
-      (active
-        ? "bg-primary/12 text-primary"
-        : "text-muted hover:bg-black/5 dark:hover:bg-white/10")
-    );
-  };
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+  const linkClass = (href: string) =>
+    "whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium transition-colors " +
+    (isActive(href)
+      ? "bg-primary/12 text-primary"
+      : "text-muted hover:bg-black/5 dark:hover:bg-white/10");
+
+  const secondaryActive = SECONDARY.some((l) => isActive(l.href));
 
   return (
     <header className="sticky top-0 z-40 border-b border-[color:var(--border)] bg-[color:var(--surface)]/80 backdrop-blur-md">
@@ -43,13 +50,70 @@ export function Nav() {
           <span className="hidden text-lg brand-gradient sm:inline">{t("brand")}</span>
         </Link>
 
-        {/* Десктоп: ссылки в ряд + переключатель языка */}
+        {/* Десктоп: основные ссылки + «Ещё» + язык */}
         <div className="hidden items-center gap-1 md:flex">
-          {LINKS.map((l) => (
+          {PRIMARY.map((l) => (
             <Link key={l.href} href={l.href} className={linkClass(l.href)}>
               {t(l.key)}
             </Link>
           ))}
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((v) => !v)}
+              aria-expanded={moreOpen}
+              aria-haspopup="menu"
+              className={
+                "flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors " +
+                (secondaryActive
+                  ? "bg-primary/12 text-primary"
+                  : "text-muted hover:bg-black/5 dark:hover:bg-white/10")
+              }
+            >
+              {t("nav.more")}
+              <span
+                className={"text-xs transition-transform " + (moreOpen ? "rotate-180" : "")}
+                aria-hidden
+              >
+                ▾
+              </span>
+            </button>
+
+            {moreOpen && (
+              <>
+                {/* клик вне меню закрывает его */}
+                <button
+                  type="button"
+                  aria-hidden
+                  tabIndex={-1}
+                  className="fixed inset-0 z-10 cursor-default"
+                  onClick={() => setMoreOpen(false)}
+                />
+                <div
+                  role="menu"
+                  className="card absolute right-0 top-full z-20 mt-2 w-48 overflow-hidden p-1 shadow-lg"
+                >
+                  {SECONDARY.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      role="menuitem"
+                      className={
+                        "block rounded-md px-3 py-2 text-sm font-medium transition-colors " +
+                        (isActive(l.href)
+                          ? "bg-primary/12 text-primary"
+                          : "hover:bg-black/5 dark:hover:bg-white/10")
+                      }
+                    >
+                      {t(l.key)}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
           <LanguageSwitcher className="ml-2" />
         </div>
 
@@ -84,11 +148,11 @@ export function Nav() {
         </button>
       </nav>
 
-      {/* Мобильное выпадающее меню */}
+      {/* Мобильное выпадающее меню — все пункты */}
       {open && (
         <div className="border-t md:hidden">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-3">
-            {LINKS.map((l) => (
+            {ALL.map((l) => (
               <Link key={l.href} href={l.href} className={linkClass(l.href)}>
                 {t(l.key)}
               </Link>
