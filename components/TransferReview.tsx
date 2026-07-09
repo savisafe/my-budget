@@ -18,11 +18,15 @@ export function TransferReview() {
   }
 
   const row = (out?: Transaction, inc?: Transaction) => (
-    <div className="text-sm">
-      <div className="flex items-center gap-2">
-        <span className="text-danger">↑ {out ? formatMoney(out.amount, out.currency) : "—"}</span>
+    <div className="min-w-0 text-sm">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+        <span className="tnum text-danger">
+          ↑ {out ? formatMoney(out.amount, out.currency) : "—"}
+        </span>
         <span className="text-muted">·</span>
-        <span className="text-accent">↓ {inc ? formatMoney(inc.amount, inc.currency) : "—"}</span>
+        <span className="tnum text-accent">
+          ↓ {inc ? formatMoney(inc.amount, inc.currency) : "—"}
+        </span>
       </div>
       <div className="text-muted">
         {out?.bank || out?.sourceFile} → {inc?.bank || inc?.sourceFile} ·{" "}
@@ -40,19 +44,19 @@ export function TransferReview() {
             {candidates.map((p) => (
               <div
                 key={p.id}
-                className="surface flex items-center justify-between gap-3 rounded-lg border p-3"
+                className="surface flex flex-col gap-3 rounded-lg border p-3 sm:flex-row sm:items-center sm:justify-between"
               >
                 {row(byId.get(p.outId), byId.get(p.inId))}
-                <div className="flex gap-2">
+                <div className="flex shrink-0 gap-2">
                   <button
                     onClick={() => confirmTransfer(p.id)}
-                    className="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-white hover:opacity-90"
+                    className="btn btn-primary flex-1 sm:flex-none"
                   >
                     {t("transfers.isTransfer")}
                   </button>
                   <button
                     onClick={() => rejectTransfer(p.id)}
-                    className="rounded-lg border border-[color:var(--border)] px-3 py-1.5 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+                    className="btn btn-secondary flex-1 sm:flex-none"
                   >
                     {t("transfers.notTransfer")}
                   </button>
@@ -72,12 +76,12 @@ export function TransferReview() {
             {confirmed.map((p) => (
               <div
                 key={p.id}
-                className="surface flex items-center justify-between gap-3 rounded-lg border border-dashed p-3 opacity-70"
+                className="surface flex flex-col gap-3 rounded-lg border border-dashed p-3 opacity-70 sm:flex-row sm:items-center sm:justify-between"
               >
                 {row(byId.get(p.outId), byId.get(p.inId))}
                 <button
                   onClick={() => rejectTransfer(p.id)}
-                  className="rounded-lg border border-[color:var(--border)] px-3 py-1.5 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+                  className="btn btn-secondary shrink-0"
                 >
                   {t("transfers.return")}
                 </button>
