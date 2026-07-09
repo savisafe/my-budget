@@ -1,57 +1,43 @@
 import type { ParsedFile, Transaction } from "@/lib/types";
 import { makeTxId } from "@/lib/normalize";
+import { extractPdfLines, linesToText } from "./pdfText";
 
 /**
- * Извлекает текст из PDF на клиенте через pdfjs-dist и парсит выписку Kaspi Gold.
+ * Извлекает текст из PDF на клиенте и парсит выписку Kaspi Gold.
  * Логика распознавания перенесена из старого server.js:parsePDFText и упрощена.
+ * Универсальный разбор других банков — в pdf.ts (через реконструкцию таблицы).
  */
 export async function parseKaspiPdf(file: File): Promise<ParsedFile> {
-  const text = await extractPdfText(file);
+  const lines = await extractPdfLines(file);
+  const text = linesToText(lines);
+  return buildKaspiParsedFile(text, file.name);
+}
+
+/** Строит ParsedFile из уже извлечённого текста выписки Kaspi Gold. */
+export function buildKaspiParsedFile(text: string, fileName: string): ParsedFile {
   const raw = parseKaspiText(text);
 
   const preNormalized: Transaction[] = raw.map((r, index) => {
     const amount = parseKaspiAmount(r.amount);
     return {
-      id: makeTxId(r.date, amount, r.store, file.name, index),
+      id: makeTxId(r.date, amount, r.store, fileName, index),
       date: r.dateIso,
       amount,
       currency: "KZT",
       description: r.store,
       rawType: r.type,
       bank: "Kaspi Gold",
-      sourceFile: file.name,
+      sourceFile: fileName,
     };
   });
 
   return {
-    fileName: file.name,
+    fileName,
     headers: ["Дата", "Сумма", "Тип", "Магазин"],
     rows: raw.map((r) => [r.date, r.amount, r.type, r.store]),
     detectedBank: "Kaspi Gold",
     preNormalized,
   };
-}
-
-async function extractPdfText(file: File): Promise<string> {
-  const pdfjs = await import("pdfjs-dist");
-  // Воркер как ассет webpack 5 (эмитится в бандл, работает офлайн).
-  pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
-    import.meta.url,
-  ).toString();
-
-  const buf = await file.arrayBuffer();
-  const doc = await pdfjs.getDocument({ data: buf }).promise;
-  let text = "";
-  for (let i = 1; i <= doc.numPages; i++) {
-    const page = await doc.getPage(i);
-    const content = await page.getTextContent();
-    const pageText = content.items
-      .map((item) => ("str" in item ? item.str : ""))
-      .join(" ");
-    text += pageText + "\n";
-  }
-  return text;
 }
 
 interface RawKaspiRow {

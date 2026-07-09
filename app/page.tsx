@@ -52,7 +52,7 @@ export default function ImportPage() {
         const preset = matchPreset(parsed, mappings);
         nextPending.push({
           file: parsed,
-          mapping: preset ?? guessMapping(parsed.headers),
+          mapping: preset ?? guessMapping(parsed.headers, parsed.detectedBank ?? ""),
         });
       } catch (e) {
         setError(e instanceof Error ? e.message : t("import.errorUnrecognized", { name: file.name }));

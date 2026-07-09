@@ -1,6 +1,7 @@
 import type { ParsedFile } from "@/lib/types";
 import { parseCsv } from "./csv";
 import { parseXlsx } from "./xlsx";
+import { parsePdf } from "./pdf";
 import { parseKaspiPdf } from "./pdfKaspi";
 
 export type FileKind = "csv" | "xlsx" | "pdf" | "unknown";
@@ -24,12 +25,12 @@ export async function parseFile(file: File): Promise<ParsedFile> {
     case "xlsx":
       return parseXlsx(file);
     case "pdf":
-      // Сейчас поддержан формат Kaspi Gold. Другие PDF вернут пустой результат,
-      // и пользователю будет предложено выгрузить CSV/Excel.
-      return parseKaspiPdf(file);
+      // Kaspi Gold распознаётся автоматически; для остальных банков таблица
+      // реконструируется из PDF и уходит на шаг сопоставления колонок.
+      return parsePdf(file);
     default:
       throw new Error(`Неподдерживаемый тип файла: ${file.name}`);
   }
 }
 
-export { parseCsv, parseXlsx, parseKaspiPdf };
+export { parseCsv, parseXlsx, parsePdf, parseKaspiPdf };
