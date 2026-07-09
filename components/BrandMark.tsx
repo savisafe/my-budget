@@ -21,11 +21,11 @@ export function BrandMark({ className = "h-8 w-8" }: { className?: string }) {
       {/* Монета */}
       <circle cx="256" cy="336" r="150" fill="var(--color-primary)" />
       <circle cx="256" cy="336" r="126" fill="none" stroke="#fff" strokeOpacity="0.25" strokeWidth="8" />
-      {/* Тенге */}
-      <g stroke="#fff" strokeWidth="20" strokeLinecap="round">
-        <path d="M206 300 H306" />
-        <path d="M206 336 H306" />
-        <path d="M256 336 V404" />
+      {/* Стрелка роста (валюто-нейтрально) */}
+      <g stroke="#fff" strokeWidth="26" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <path d="M196 382 L312 298" />
+        <path d="M312 298 L272 298" />
+        <path d="M312 298 L312 338" />
       </g>
     </svg>
   );

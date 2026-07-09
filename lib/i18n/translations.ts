@@ -13,6 +13,7 @@ export const translations: Record<Locale, Dict> = {
     "nav.instructions": "Инструкции",
     "nav.assistant": "ИИ-помощник",
     "nav.menu": "Меню",
+    "nav.more": "Ещё",
     "nav.language": "Язык",
 
     "footer.localNote": "Данные обрабатываются локально в браузере. Подробнее —",
@@ -201,6 +202,7 @@ export const translations: Record<Locale, Dict> = {
     "nav.instructions": "Нұсқаулық",
     "nav.assistant": "AI-көмекші",
     "nav.menu": "Мәзір",
+    "nav.more": "Тағы",
     "nav.language": "Тіл",
 
     "footer.localNote": "Деректер браузерде жергілікті өңделеді. Толығырақ —",
@@ -389,6 +391,7 @@ export const translations: Record<Locale, Dict> = {
     "nav.instructions": "Guide",
     "nav.assistant": "AI assistant",
     "nav.menu": "Menu",
+    "nav.more": "More",
     "nav.language": "Language",
 
     "footer.localNote": "Data is processed locally in your browser. Learn more —",

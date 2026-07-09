@@ -24,10 +24,10 @@
   <circle cx="256" cy="336" r="150" fill="#ffffff"/>
   <circle cx="256" cy="336" r="126" fill="none" stroke="#059669" stroke-opacity="0.16" stroke-width="8"/>
 
-  <!-- Символ тенге -->
-  <g stroke="#059669" stroke-width="20" stroke-linecap="round">
-    <path d="M206 300 H306"/>
-    <path d="M206 336 H306"/>
-    <path d="M256 336 V404"/>
+  <!-- Стрелка роста (валюто-нейтрально) -->
+  <g stroke="#059669" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M196 382 L312 298"/>
+    <path d="M312 298 L272 298"/>
+    <path d="M312 298 L312 338"/>
   </g>
 </svg>
